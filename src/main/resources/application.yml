@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: sql-training-shop
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/shop
+    username: shop
+    password: shop
+    hikari:
+      maximum-pool-size: 10
+      # Страховка от «вечных» запросов: БД сама прервёт statement дольше 30 секунд
+      connection-init-sql: SET statement_timeout = '30s'
+
+  jpa:
+    # CASE-13: значение по умолчанию в Spring Boot — true. Оставлено явно.
+    open-in-view: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        # Статистика по каждой сессии: сколько JDBC statement'ов, сколько времени, сколько batch'ей
+        generate_statistics: true
+
+  flyway:
+    placeholders:
+      # Объём генерируемых данных (1 = ~300k заказов). Применяется только при первой миграции.
+      seed_scale: 1
+
+logging:
+  level:
+    # SQL, который отправляет Hibernate
+    org.hibernate.SQL: debug
+    # Значения параметров запросов (раскомментируйте при необходимости — очень шумно)
+    # org.hibernate.orm.jdbc.bind: trace
+    # Итог по каждой сессии Hibernate: "Logging session metrics: ... N JDBC statements executed ..."
+    org.hibernate.session.metrics: debug

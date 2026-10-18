@@ -1,0 +1,10 @@
+spring:
+  flyway:
+    placeholders:
+      # ~6k заказов вместо 300k: тесты проверяют количество запросов и планы, а не время
+      seed_scale: 0.02
+
+logging:
+  level:
+    org.hibernate.SQL: info
+    org.hibernate.session.metrics: info

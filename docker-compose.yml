@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sql-training-db
+    environment:
+      POSTGRES_DB: shop
+      POSTGRES_USER: shop
+      POSTGRES_PASSWORD: shop
+    ports:
+      - "5432:5432"
+    command:
+      - postgres
+      # Статистика по всем запросам: select * from pg_stat_statements
+      - -c
+      - shared_preload_libraries=pg_stat_statements
+      - -c
+      - pg_stat_statements.track=all
+      # Все запросы дольше 200 мс попадают в лог контейнера (docker logs sql-training-db)
+      - -c
+      - log_min_duration_statement=200
+    volumes:
+      - ./docker/initdb:/docker-entrypoint-initdb.d:ro
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
