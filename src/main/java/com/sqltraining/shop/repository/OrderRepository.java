@@ -13,6 +13,9 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
+    @Query("SELECT o FROM Order o " +
+           "LEFT JOIN FETCH o.customer " +
+           "ORDER BY o.createdAt DESC")
     List<Order> findAllByOrderByCreatedAtDesc(Limit limit);
 
     List<Order> findByStatusAndCreatedAtBetweenOrderByCreatedAtDesc(OrderStatus status, Instant from, Instant to);

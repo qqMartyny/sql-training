@@ -22,6 +22,7 @@ spring:
         highlight_sql: true
         # Статистика по каждой сессии: сколько JDBC statement'ов, сколько времени, сколько batch'ей
         generate_statistics: true
+        default_batch_fetch_size: 50
 
   flyway:
     placeholders:
